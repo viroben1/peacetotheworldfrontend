@@ -7,7 +7,7 @@
       <div class="hero-content">
         <h1 class="fade-up">🌍 Spread Peace with a Flag Of Peace</h1>
         <p class="fade-up">Discover and purchase a flags that stand for unity, peace, and hope across borders.</p>
-        <router-link to="/flags" class="cta-button fade-up">Explore Flags</router-link>
+        <router-link to="/flags-page" class="cta-button fade-up">Explore Flags</router-link>
       </div>
       <div class="hero-image fade-up">
         <img src="../../public/peacedove.png" alt="Peace Flag" />

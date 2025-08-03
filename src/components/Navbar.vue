@@ -3,7 +3,6 @@
     <div class="container">
       <router-link to="/" class="logo">
        <img src="../assets/peaceolivebranch.png" alt="Olive Branch" class="highlight inline-block w-4 h-4 mr-1 align-middle"> PeaceToTheWorld
-
       </router-link>
 
       <nav class="links">
@@ -43,8 +42,8 @@ const logout = () => {
   z-index: 999;
   background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(12px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  padding: 0.8rem 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  padding: 0.5rem 0; /* Reduced from 0.8rem */
   transition: all 0.3s ease;
 }
 
@@ -58,7 +57,7 @@ const logout = () => {
 }
 
 .logo {
-  font-size: 1.8rem;
+  font-size: 1.4rem; /* Reduced from 1.8rem */
   font-weight: 800;
   color: #0077cc;
   text-decoration: none;
@@ -67,23 +66,22 @@ const logout = () => {
   gap: 0.5rem;
 }
 
-
 .logo .highlight {
-  font-size: 1.5rem;
+  font-size: 1.2rem; /* Reduced from 1.5rem */
   color: #ff4081;
 }
 
 .links {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
+  gap: 1rem; /* Reduced from 1.5rem */
 }
 
 .link {
   text-decoration: none;
   color: #333;
   font-weight: 500;
-  font-size: 1rem;
+  font-size: 0.9rem; /* Reduced from 1rem */
   transition: color 0.3s ease;
   position: relative;
 }
@@ -94,7 +92,7 @@ const logout = () => {
   width: 0%;
   background: #0077cc;
   position: absolute;
-  bottom: -5px;
+  bottom: -4px; /* Adjusted for smaller size */
   left: 0;
   transition: width 0.3s ease;
 }
@@ -109,15 +107,15 @@ const logout = () => {
 
 .actions {
   display: flex;
-  gap: 0.7rem;
-  margin-left: 1.5rem;
+  gap: 0.5rem; /* Reduced from 0.7rem */
+  margin-left: 1rem; /* Reduced from 1.5rem */
 }
 
 .btn {
-  font-size: 0.95rem;
+  font-size: 0.85rem; /* Reduced from 0.95rem */
   font-weight: 600;
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
+  padding: 0.4rem 0.8rem; /* Reduced from 0.5rem 1rem */
+  border-radius: 6px; /* Slightly reduced */
   cursor: pointer;
   transition: all 0.3s ease;
   text-decoration: none;
@@ -125,7 +123,7 @@ const logout = () => {
 }
 
 .btn.outline {
-  border: 2px solid #0077cc;
+  border: 1.5px solid #0077cc; /* Slightly thinner border */
   background: transparent;
   color: #0077cc;
 }
