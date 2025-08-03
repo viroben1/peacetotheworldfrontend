@@ -2,7 +2,7 @@
   <header class="navbar">
     <div class="container">
       <router-link to="/" class="logo">
-       <img src="../assets/peace+to+the+world+olive+branchJU.png" alt="Olive Branch" class="highlight inline-block w-4 h-4 mr-1 align-middle"> PeaceToTheWorld
+       <img src="../assets/peaceolivebranch.png" alt="Olive Branch" class="highlight inline-block w-4 h-4 mr-1 align-middle"> PeaceToTheWorld
 
       </router-link>
 
