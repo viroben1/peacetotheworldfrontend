@@ -20,7 +20,7 @@ const routes = [
     component: Home,
   },
   {
-    path: "/flags-page",
+    path: "/flags",
     name: "FlagsPage",
     component: FlagsPage,
   }
