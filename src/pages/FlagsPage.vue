@@ -1,35 +1,48 @@
 <template>
   <div class="flags-page">
     <Navbar />
-    
+
     <div class="flags-container">
       <div class="page-header">
         <h1 class="page-title">Peace Flags Collection</h1>
-        <p class="page-subtitle">Each flag represents a message of unity and hope. Download high-quality PDFs for display or purchase physical copies.</p>
+        <p class="page-subtitle">
+          Each flag represents a message of unity and hope. Download
+          high-quality PDFs for display or purchase physical copies.
+        </p>
       </div>
-      
+
       <div class="filter-controls">
         <div class="search-box">
-          <input 
-            type="text" 
-            v-model="searchQuery" 
-            placeholder="Search flags by name or description..." 
+          <input
+            type="text"
+            v-model="searchQuery"
+            placeholder="Search flags by name or description..."
             @input="handleSearch"
             aria-label="Search flags"
-          >
+          />
           <span class="search-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
               <circle cx="11" cy="11" r="8"></circle>
               <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
             </svg>
           </span>
         </div>
-        
+
         <div class="filter-group">
           <label for="sort-select" class="filter-label">Sort by:</label>
-          <select 
+          <select
             id="sort-select"
-            v-model="sortOption" 
+            v-model="sortOption"
             @change="handleSortChange"
             class="sort-select"
             aria-label="Sort options"
@@ -42,12 +55,12 @@
             <option value="price-DESC">Price (High to Low)</option>
           </select>
         </div>
-        
+
         <div class="filter-group">
           <label for="limit-select" class="filter-label">Items per page:</label>
-          <select 
+          <select
             id="limit-select"
-            v-model="limit" 
+            v-model="limit"
             @change="fetchProducts"
             class="sort-select"
             aria-label="Items per page"
@@ -58,14 +71,24 @@
           </select>
         </div>
       </div>
-      
+
       <div v-if="loading" class="loading-state">
         <div class="spinner"></div>
         <p>Loading peace flags...</p>
       </div>
-      
+
       <div v-else-if="error" class="error-state">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
           <circle cx="12" cy="12" r="10"></circle>
           <line x1="12" y1="8" x2="12" y2="12"></line>
           <line x1="12" y1="16" x2="12.01" y2="16"></line>
@@ -74,21 +97,33 @@
         <p>{{ error }}</p>
         <button @click="fetchProducts" class="retry-btn">Try Again</button>
       </div>
-      
+
       <template v-else>
         <div v-if="filteredProducts.length === 0" class="empty-state">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path
+              d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
+            ></path>
           </svg>
           <h3>No flags found</h3>
           <p v-if="searchQuery">Try adjusting your search query</p>
           <p v-else>There are currently no flags available</p>
         </div>
-        
+
         <div v-else class="flags-grid">
-          <div 
-            v-for="product in filteredProducts" 
-            :key="product.id" 
+          <div
+            v-for="product in filteredProducts"
+            :key="product.id"
             class="flag-card"
             @mouseenter="hoveredFlag = product.id"
             @mouseleave="hoveredFlag = null"
@@ -96,64 +131,107 @@
             <div class="flag-preview">
               <!-- Watermarked image from backend -->
               <div class="image-container">
-                <img 
+                <img
                   v-if="product.watermark_image_base64"
-                  :src="product.watermark_image_base64" 
+                  :src="product.watermark_image_base64"
                   :alt="product.name"
                   class="flag-image"
                   loading="lazy"
                 />
                 <div v-else class="image-placeholder">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <rect
+                      x="3"
+                      y="3"
+                      width="18"
+                      height="18"
+                      rx="2"
+                      ry="2"
+                    ></rect>
                     <circle cx="8.5" cy="8.5" r="1.5"></circle>
                     <polyline points="21 15 16 10 5 21"></polyline>
                   </svg>
                 </div>
-                
+
                 <div class="preview-overlay" @click="openPreview(product)">
                   <span>Preview Design</span>
                 </div>
               </div>
-              
+
               <!-- Quick add to cart button that appears on hover -->
-              <button 
+              <button
                 v-if="hoveredFlag === product.id"
                 class="quick-add-btn"
-                @click.stop="addToCart(product)"
+                @click.stop="handleAddToCart(product)"
                 aria-label="Add to cart"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
                   <circle cx="9" cy="21" r="1"></circle>
                   <circle cx="20" cy="21" r="1"></circle>
-                  <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                  <path
+                    d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"
+                  ></path>
                 </svg>
                 Add to Cart
               </button>
             </div>
-            
+
             <div class="flag-details">
               <h3>{{ product.name }}</h3>
-              <p class="flag-description">{{ truncateDescription(product.description) }}</p>
+              <p class="flag-description">
+                {{ truncateDescription(product.description) }}
+              </p>
               <div class="flag-footer">
                 <span class="flag-price">${{ product.price }}</span>
                 <div class="flag-actions">
-                  <button 
+                  <button
                     class="details-btn"
                     @click="openFlagDetails(product)"
                     aria-label="View details"
                   >
                     Details
                   </button>
-                  <button 
+                  <button
                     class="add-to-cart-btn"
-                    @click="addToCart(product)"
+                    @click="handleAddToCart(product)"
                     aria-label="Add to cart"
                   >
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
                       <circle cx="9" cy="21" r="1"></circle>
                       <circle cx="20" cy="21" r="1"></circle>
-                      <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                      <path
+                        d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"
+                      ></path>
                     </svg>
                     Add
                   </button>
@@ -162,9 +240,9 @@
             </div>
           </div>
         </div>
-        
+
         <div v-if="pagination.totalPages > 1" class="pagination">
-          <button 
+          <button
             @click="changePage(pagination.currentPage - 1)"
             :disabled="pagination.currentPage === 1"
             class="pagination-btn"
@@ -172,12 +250,12 @@
           >
             &larr;
           </button>
-          
+
           <span class="page-info">
             Page {{ pagination.currentPage }} of {{ pagination.totalPages }}
           </span>
-          
-          <button 
+
+          <button
             @click="changePage(pagination.currentPage + 1)"
             :disabled="pagination.currentPage === pagination.totalPages"
             class="pagination-btn"
@@ -188,58 +266,101 @@
         </div>
       </template>
     </div>
-    
+
     <!-- PDF Preview Modal -->
-    <div v-if="showPreview" class="preview-modal" @click.self="showPreview = false">
+    <div
+      v-if="showPreview"
+      class="preview-modal"
+      @click.self="showPreview = false"
+    >
       <div class="modal-content">
-        <button class="close-modal" @click="showPreview = false" aria-label="Close modal">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <button
+          class="close-modal"
+          @click="showPreview = false"
+          aria-label="Close modal"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
             <line x1="18" y1="6" x2="6" y2="18"></line>
             <line x1="6" y1="6" x2="18" y2="18"></line>
           </svg>
         </button>
         <h2>{{ selectedFlag.name }}</h2>
         <div class="modal-pdf-container">
-          
-
-            <img 
-                  v-if="selectedFlag.watermark_image_base64"
-                  :src="selectedFlag.watermark_image_base64" 
-                  
-                  class="pdf-iframe"
-                  loading="lazy"
-                />
+          <img
+            v-if="selectedFlag.watermark_image_base64"
+            :src="selectedFlag.watermark_image_base64"
+            class="pdf-iframe"
+            loading="lazy"
+          />
         </div>
         <div class="modal-actions">
           <button class="btn-outline" @click="showPreview = false">
             Close Preview
           </button>
-          <button class="btn-primary" @click="addToCart(selectedFlag)">
+          <button class="btn-primary" @click="handleAddToCart(selectedFlag)">
             Add to Cart - ${{ selectedFlag.price }}
           </button>
         </div>
       </div>
     </div>
-    
+
     <!-- Flag Details Modal -->
-    <div v-if="showDetails" class="details-modal" @click.self="showDetails = false">
+    <div
+      v-if="showDetails"
+      class="details-modal"
+      @click.self="showDetails = false"
+    >
       <div class="modal-content">
-        <button class="close-modal" @click="showDetails = false" aria-label="Close modal">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <button
+          class="close-modal"
+          @click="showDetails = false"
+          aria-label="Close modal"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
             <line x1="18" y1="6" x2="6" y2="18"></line>
             <line x1="6" y1="6" x2="18" y2="18"></line>
           </svg>
         </button>
         <div class="details-container">
           <div class="details-image">
-            <img 
+            <img
               v-if="selectedFlag.watermark_image_base64"
-              :src="selectedFlag.watermark_image_base64" 
-              :alt="selectedFlag.name" 
+              :src="selectedFlag.watermark_image_base64"
+              :alt="selectedFlag.name"
               loading="lazy"
             />
             <div v-else class="image-placeholder large">
-              <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="48"
+                height="48"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
                 <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
                 <circle cx="8.5" cy="8.5" r="1.5"></circle>
                 <polyline points="21 15 16 10 5 21"></polyline>
@@ -256,23 +377,27 @@
               </div>
               <div class="meta-item">
                 <span class="meta-label">Stock:</span>
-                <span class="meta-value">{{ selectedFlag.stock }} available</span>
+                <span class="meta-value"
+                  >{{ selectedFlag.stock }} available</span
+                >
               </div>
               <div class="meta-item">
                 <span class="meta-label">Created:</span>
-                <span class="meta-value">{{ formatDate(selectedFlag.created_at) }}</span>
+                <span class="meta-value"
+                  >{{ formatDate(selectedFlag.created_at) }}</span
+                >
               </div>
             </div>
             <div class="details-actions">
-              <button 
+              <button
                 class="btn-outline"
                 @click="showPreview = true; showDetails = false"
               >
                 Preview Design
               </button>
-              <button 
+              <button
                 class="btn-primary"
-                @click="addToCart(selectedFlag)"
+                @click="handleAddToCart(selectedFlag)"
               >
                 Add to Cart - ${{ selectedFlag.price }}
               </button>
@@ -281,140 +406,137 @@
         </div>
       </div>
     </div>
-    
-    
   </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
-import Navbar from '../components/Navbar.vue'
+  import { ref, computed, onMounted } from 'vue'
+  import Navbar from '../components/Navbar.vue'
+  import axios from "axios";
+  import { useCart } from '../composables/useCart'
 
-import axios from "axios";
+  // Import cart functionality
+  const { addToCart } = useCart()
+
+  // Your existing reactive variables
+  const products = ref([])
+  const searchQuery = ref('')
+  const sortOption = ref('created_at-DESC')
+  const hoveredFlag = ref(null)
+  const showPreview = ref(false)
+  const showDetails = ref(false)
+  const selectedFlag = ref(null)
+  const loading = ref(false)
+  const error = ref(null)
+  const limit = ref(12)
+  const page = ref(1)
+
+  const pagination = ref({
+    totalItems: 0,
+    totalPages: 1,
+    currentPage: 1,
+    itemsPerPage: 12
+  })
 
 
-
-
-const products = ref([])
-const searchQuery = ref('')
-const sortOption = ref('created_at-DESC')
-const hoveredFlag = ref(null)
-const showPreview = ref(false)
-const showDetails = ref(false)
-const selectedFlag = ref(null)
-const loading = ref(false)
-const error = ref(null)
-const limit = ref(12)
-const page = ref(1)
-
-const pagination = ref({
-  totalItems: 0,
-  totalPages: 1,
-  currentPage: 1,
-  itemsPerPage: 12
-})
-
-// Fetch products from backend with pagination and filters
-const fetchProducts = async () => {
-  loading.value = true
-  error.value = null
-  
-  try {
-    const [sortBy, order] = sortOption.value.split('-')
-    
-    const params = {
-      search: searchQuery.value,
-      sort: sortBy,
-      order,
-      page: page.value,
-      limit: limit.value
-    }
-    
-    const response = await axios.get(`${import.meta.env.VITE_API_URL}/products/all`, { params })
-    
-    products.value = response.data.data.map(product => ({
-      ...product,
-      pdf_url: product.image_url // Using image_url as pdf_url for the iframe preview
-    }))
-    
-    pagination.value = {
-      totalItems: response.data.pagination.totalItems,
-      totalPages: response.data.pagination.totalPages,
-      currentPage: response.data.pagination.currentPage,
-      itemsPerPage: response.data.pagination.itemsPerPage
-    }
-  } catch (err) {
-    console.error('Error fetching products:', err)
-    error.value = err.response?.data?.error || 'Failed to load products. Please try again later.'
-    
-  } finally {
-    loading.value = false
+  const handleAddToCart = (product) => {
+    addToCart(product)
   }
-}
 
-// Handle search with debounce
-let searchTimeout = null
-const handleSearch = () => {
-  clearTimeout(searchTimeout)
-  searchTimeout = setTimeout(() => {
+ 
+  const fetchProducts = async () => {
+    loading.value = true
+    error.value = null
+
+    try {
+      const [sortBy, order] = sortOption.value.split('-')
+
+      const params = {
+        search: searchQuery.value,
+        sort: sortBy,
+        order,
+        page: page.value,
+        limit: limit.value
+      }
+
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/products/all`, { params })
+
+      products.value = response.data.data.map(product => ({
+        ...product,
+        pdf_url: product.image_url // Using image_url as pdf_url for the iframe preview
+      }))
+
+      pagination.value = {
+        totalItems: response.data.pagination.totalItems,
+        totalPages: response.data.pagination.totalPages,
+        currentPage: response.data.pagination.currentPage,
+        itemsPerPage: response.data.pagination.itemsPerPage
+      }
+    } catch (err) {
+      console.error('Error fetching products:', err)
+      error.value = err.response?.data?.error || 'Failed to load products. Please try again later.'
+    } finally {
+      loading.value = false
+    }
+  }
+
+  // Handle search with debounce
+  let searchTimeout = null
+  const handleSearch = () => {
+    clearTimeout(searchTimeout)
+    searchTimeout = setTimeout(() => {
+      page.value = 1
+      fetchProducts()
+    }, 500)
+  }
+
+  // Handle sort change
+  const handleSortChange = () => {
     page.value = 1
     fetchProducts()
-  }, 500)
-}
-
-// Handle sort change
-const handleSortChange = () => {
-  page.value = 1
-  fetchProducts()
-}
-
-// Change page
-const changePage = (newPage) => {
-  if (newPage >= 1 && newPage <= pagination.value.totalPages) {
-    page.value = newPage
-    fetchProducts()
-    window.scrollTo({ top: 0, behavior: 'smooth' })
   }
-}
 
-// Format date
-const formatDate = (dateString) => {
-  const options = { year: 'numeric', month: 'long', day: 'numeric' }
-  return new Date(dateString).toLocaleDateString(undefined, options)
-}
+  // Change page
+  const changePage = (newPage) => {
+    if (newPage >= 1 && newPage <= pagination.value.totalPages) {
+      page.value = newPage
+      fetchProducts()
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    }
+  }
 
-// Truncate description for cards
-const truncateDescription = (description) => {
-  if (!description) return ''
-  return description.length > 100 
-    ? description.substring(0, 100) + '...' 
-    : description
-}
 
-const openPreview = (product) => {
-  selectedFlag.value = product
-  showPreview.value = true
-}
+  const formatDate = (dateString) => {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' }
+    return new Date(dateString).toLocaleDateString(undefined, options)
+  }
 
-const openFlagDetails = (product) => {
-  selectedFlag.value = product
-  showDetails.value = true
-}
 
-const addToCart = (product) => {
+  const truncateDescription = (description) => {
+    if (!description) return ''
+    return description.length > 100
+      ? description.substring(0, 100) + '...'
+      : description
+  }
+
+  const openPreview = (product) => {
+    selectedFlag.value = product
+    showPreview.value = true
+  }
+
+  const openFlagDetails = (product) => {
+    selectedFlag.value = product
+    showDetails.value = true
+  }
+
   
-  console.log('Added to cart:', product)
-  // Here you would typically call your cart store/action
-}
+  const filteredProducts = computed(() => {
+    return products.value
+  })
 
-// Computed property for filtered products (client-side filtering if needed)
-const filteredProducts = computed(() => {
-  return products.value
-})
-
-onMounted(() => {
-  fetchProducts()
-})
+  onMounted(() => {
+    fetchProducts()
+  })
 </script>
 
 <style scoped>
