@@ -124,8 +124,13 @@
               <span>${{ (totalPrice * 1.1).toFixed(2) }}</span>
             </div>
 
-            <button class="checkout-btn">
-              Proceed to Checkout
+            <button 
+              @click="handleCheckout" 
+              class="checkout-btn" 
+              :disabled="isCheckingOut"
+            >
+              <span v-if="isCheckingOut">Processing...</span>
+              <span v-else>Proceed to Checkout</span>
             </button>
             
             <router-link to="/flags" class="continue-shopping">
@@ -139,6 +144,7 @@
 </template>
 
 <script setup>
+import { ref } from 'vue'
 import { useCart } from '../composables/useCart'
 import Navbar from './Navbar.vue'
 
@@ -148,14 +154,28 @@ const {
   totalPrice, 
   removeFromCart, 
   updateQuantity, 
-  clearCart 
+  clearCart,
+  checkout 
 } = useCart()
+
+const isCheckingOut = ref(false)
 
 const truncateDescription = (description) => {
   if (!description) return ''
   return description.length > 120 
     ? description.substring(0, 120) + '...' 
     : description
+}
+
+const handleCheckout = async () => {
+  isCheckingOut.value = true
+  try {
+    await checkout()
+  } catch (error) {
+    console.error('Checkout error:', error)
+  } finally {
+    isCheckingOut.value = false
+  }
 }
 </script>
 
@@ -461,8 +481,13 @@ const truncateDescription = (description) => {
   margin: 1.5rem 0 1rem;
 }
 
-.checkout-btn:hover {
+.checkout-btn:hover:not(:disabled) {
   background: #2563eb;
+}
+
+.checkout-btn:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
 }
 
 .continue-shopping {

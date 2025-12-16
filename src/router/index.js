@@ -5,6 +5,7 @@ import Home from "../pages/Home.vue";
 import FlagsPage from "../pages/FlagsPage.vue";
 import Carts from "../components/Cart.vue";
 import About from "../pages/AboutUs.vue";
+import CheckoutSuccess from "../pages/CheckoutSuccess.vue";
 const routes = [
   {
     path: "/signup",
@@ -35,6 +36,11 @@ const routes = [
     path: "/about",
     name: "About",
     component: About,
+  },
+  {
+    path: "/checkout/success",
+    name: "CheckoutSuccess",
+    component: CheckoutSuccess,
   }
 ];
 
